@@ -1,13 +1,33 @@
 const buttonRun = document.getElementById("button");
 const timer = document.getElementById("timer");
+const progressLine = document.getElementById("progress-line");
+const progressLineBg = document.getElementById("progress-line-bg");
 
 let msec = 0,
     sec = 0,
     min = 0,
     hour = 0;
 
+// Progressbar logic
+function progress() {
+    let width = 0,
+        id = setInterval(progressStatus, 1000),
+        msecCurrent = msec;
 
-function tick() {
+    function progressStatus() {
+        if(width >= 100){
+            clearInterval(id);
+            } else {
+                width = width + (1000 / msecCurrent * 100 );
+                progressLine.style.width = width + "%";
+            }
+        }
+    }
+
+
+
+
+ function tick() {
    if(buttonRun.innerText == "End"){
         msec += 1000;
         
@@ -96,6 +116,12 @@ buttonRun.addEventListener("click", () => {
         tick();
         setInterval(tick, 1000)
      } else if (buttonRun.innerText == "End"){
+
+        
+        buttonRun.style.display = "none";
+        progressLineBg.style.display = "block";
+        progress();
+        
         let timeInterval = setInterval(countDown, 1000)
         
         buttonRun.innerText = ""
